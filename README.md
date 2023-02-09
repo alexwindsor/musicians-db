@@ -10,10 +10,13 @@ There is a one-to-many relationship between the 'musicians' table and the 'music
 
 Each musician may or may not have a 'profile'. To save space on the database, the profile is kept in a separate 'profiles' table and so there is a one-to-one relationship between 'musicians' and 'profiles'.
 
-To get this project running on your computer, you need a server running node.js (for Tailwind), PHP 7 or higher and MYSQL. Create a database called 'musicians'. Download the project and type the following in the root directory :
+To get this project running on your computer, you need a server running node.js (for Tailwind), PHP 7 or higher and MYSQL. 
+Create a database called 'musicians'. Download the project then create a database called 'musicians'.
+Type the following in the root directory command line :
 
+'npm install -D tailwindcss postcss autoprefixer'
+'composer install'
 'php artisan migrate:fresh --seed'
-
 'npm run dev'
 
 ..then in a different terminal type :
@@ -21,3 +24,5 @@ To get this project running on your computer, you need a server running node.js 
 'php artisan serve'
 
 Then point your browser to http://localhost:8000
+
+

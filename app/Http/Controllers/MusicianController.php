@@ -54,15 +54,12 @@ class MusicianController extends Controller
             $dompdf->setPaper('A4', 'landscape');
             $dompdf->render();
             $dompdf->stream();
-        } 
+        }
         else return view('home', compact('musicians', 'instruments', 'instruments_filter'));
-   
-
-
-
-
 
     }
+
+
     private function pdfVersion($musicians, $instruments_filter) {
 
         $pdf = '<html lang="en"><head><title>Musicians DB</title><style>table,tr,td{border:1px solid;}table{width:100%;border-collapse:collapse;}</style></head><body>';
@@ -100,7 +97,7 @@ class MusicianController extends Controller
             $pdf .= '</td>';
             $pdf .= '<td style="padding:12px;">';
             for ($i = 0; $i < count($musician->musician_details_text); $i++) {
-                
+
                 $pdf .= $musician->detail_types[$i] . ': ';
                 $pdf .=  '<span style="font-size:80%">' . $musician->musician_details_text[$i] . '</span>';
                 $pdf .=  '<br>';
@@ -108,7 +105,7 @@ class MusicianController extends Controller
             }
             $pdf .= '</td>';
             $pdf .= '</tr>';
-            
+
         }
 
 
@@ -151,21 +148,21 @@ class MusicianController extends Controller
         $musician->save();
 
         // add the profile text if there is any
-        if (strlen($fields['profile_text']) > 0) 
+        if (strlen($fields['profile_text']) > 0)
             $musician->profile()->create(['musician_id' => $musician->id, 'text' => $fields['profile_text']]);
 
-        
+
 
         return redirect('/');
     }
 
     public function store_musician_detail($musician_id, $detail_types_id, $musician_details_text) {
 
-        for ($i = 0; $i < count($musician_details_text); $i++) { 
+        for ($i = 0; $i < count($musician_details_text); $i++) {
             if (strlen($musician_details_text[$i]) > 0 && intval($detail_types_id[$i]) > 0) {
                 MusicianDetail::create([
                     'musician_id' => $musician_id,
-                    'detail_types_id' => $detail_types_id[$i], 
+                    'detail_types_id' => $detail_types_id[$i],
                     'musician_details_text' => $musician_details_text[$i]
                 ]);
             }
@@ -224,10 +221,10 @@ class MusicianController extends Controller
         $this->store_musician_detail($musician->id, request('detail_types'), request('musician_detail'));
 
         // if the profile text is empty then we delete the profile record (if it exists)
-        if (strlen($fields['profile_text']) === 0 && $musician->profile) 
+        if (strlen($fields['profile_text']) === 0 && $musician->profile)
             $musician->profile->delete();
         // otherwise we update/insert the profile record
-        elseif (strlen($fields['profile_text']) > 0) 
+        elseif (strlen($fields['profile_text']) > 0)
             $musician->profile()->upsert(['musician_id' => $id, 'text' => $fields['profile_text']], true);
 
         return redirect('/?page=' . request('page'));
@@ -251,7 +248,7 @@ class MusicianController extends Controller
     public function destroy_musician_detail() {
         MusicianDetail::destroy(request('musician_detail_id'));
     }
-    
+
 
 
     public function getProfile($profile_id) {

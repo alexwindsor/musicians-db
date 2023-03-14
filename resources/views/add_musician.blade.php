@@ -18,17 +18,17 @@
             <div class="order-1 sm:order-1 mb-6 sm:mb-0">
                 <input type="text" name="first_name" value="{{ old('first_name') }}" class="border-l-2 border-black p-1" placeholder="..first name" />
             </div>
-            
+
             <div class="order-3 sm:order-2">
                 <input type="text" name="last_name" value="{{ old('last_name') }}" class="border-l-2 border-black p-1" placeholder="..last name" />
             </div>
-            
+
             <div class="order-2 sm:order-3">
                 @error('first_name')
                     <p class="text-red-700 text-xs">{{ $message }}</p>
                 @enderror
             </div>
-            
+
             <div class="order-4 sm:order-4">
                 @error('last_name')
                     <p class="text-red-700 text-xs">{{ $message }}</p>
@@ -57,7 +57,7 @@
 
         <div class="px-4 py-2 bg-zinc-500 text-zinc-100 mt-3">
             Profile:
-        </div> 
+        </div>
 
         <div class="bg-zinc-300 p-3">
             <textarea name="profile_text" class="w-full h-32 border-l-2 border-black p-1"></textarea>
@@ -68,7 +68,7 @@
 
         <div class="px-4 py-2 bg-zinc-500 text-zinc-100 mt-3">
             Details:
-        </div> 
+        </div>
 
         <div class="bg-zinc-300 p-3">
             <div id="detail_forms">
@@ -88,9 +88,9 @@
             </div>
             <button class="border-l-2 border-black bg-white p-1 px-2" id="add_detail">+</button>
         </div>
-              
+
         <div class="my-8 flex justify-around">
-            <button type="submit" class="border-l-4 border-black  bg-zinc-500 text-white p-1">ADD</button> 
+            <button type="submit" class="border-l-4 border-black  bg-zinc-500 text-white p-1">ADD</button>
             <button onclick="location.href='/?page=<?= request('page') ?>'; return false;" class="border-l-4 border-black  bg-zinc-500 text-white p-1">CANCEL</button>
         </div>
 
@@ -108,13 +108,9 @@
 
 
 
-    </div>
-
-
-
 
     <script>
-        
+
         // when button is clicked, add extra forms for musician details
         let details_form = '<div class="flex flex-row my-2"><div class="basis-1/4 mr-2"><select name="detail_types[]" class="border-l-2 border-black bg-white p-1">\
             @foreach ($detail_types as $detail_type)\

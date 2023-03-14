@@ -15,7 +15,6 @@ class MusicianController extends Controller
 {
     public function index($pdf = false) {
 
-
         $instruments_filter = [];
         if (request('instruments')) $instruments_filter = explode('*', str_replace('_', ' ', request('instruments')));
 
@@ -27,12 +26,12 @@ class MusicianController extends Controller
                 ->instrumentsFilter($instruments_filter)
                 ->$join('profiles', 'musicians.id', '=', 'profiles.musician_id')
                 ->leftJoin('musician_details', 'musicians.id', '=', 'musician_details.musician_id')
-                ->join('detail_types', 'musician_details.detail_types_id', '=', 'detail_types.id')
+                ->leftJoin('detail_types', 'musician_details.detail_types_id', '=', 'detail_types.id')
                 ->select('musicians.id', 'musicians.first_name', 'musicians.last_name', 'profiles.id as profile_id')
                 ->selectRaw('GROUP_CONCAT(`musician_details`.`musician_details_text` order by `musician_details`.`detail_types_id`) as `musician_details_text`')
                 ->selectRaw('GROUP_CONCAT(`detail_types`.`detail_type_text` order by `detail_types`.`id`) as `detail_types`')
                 ->groupBy('musicians.id', 'musicians.first_name', 'musicians.last_name', 'profiles.id')
-                ->orderBy('last_name')
+//                ->orderBy('last_name')
                 ->paginate(10)
                 ->withQuerystring();
 
@@ -44,8 +43,6 @@ class MusicianController extends Controller
         $instruments = Instrument::orderBy('name')->get();
 
         if ($pdf) {
-
-
             $dompdf = new Dompdf();
             $options = $dompdf->getOptions();
             $options->setDefaultFont('Helvetica');
@@ -129,7 +126,7 @@ class MusicianController extends Controller
         $fields = request()->validate([
             'first_name' => ['required', 'min:2', 'max:32'],
             'last_name' => ['required', 'min:2', 'max:32'],
-            'instrument' => ['required', 'min:1'],
+            'instrument' => ['array', 'required', 'min:1'],
             'profile_text' => ['nullable']
         ]);
 
@@ -142,6 +139,7 @@ class MusicianController extends Controller
         foreach (request('instrument') as $instrument_id => $on)
             $musician->instruments()->attach($instrument_id);
 
+
         $this->store_musician_detail($musician->id, request('detail_types'), request('musician_detail'));
 
 
@@ -153,31 +151,19 @@ class MusicianController extends Controller
 
 
 
+
+
+
         return redirect('/');
     }
 
-    public function store_musician_detail($musician_id, $detail_types_id, $musician_details_text) {
-
-        for ($i = 0; $i < count($musician_details_text); $i++) {
-            if (strlen($musician_details_text[$i]) > 0 && intval($detail_types_id[$i]) > 0) {
-                MusicianDetail::create([
-                    'musician_id' => $musician_id,
-                    'detail_types_id' => $detail_types_id[$i],
-                    'musician_details_text' => $musician_details_text[$i]
-                ]);
-            }
-        }
-
-
-
-    }
 
     public function edit($id) {
 
         $musician = Musician::with('instruments', 'musicianDetails')
         ->leftJoin('profiles', 'musicians.id', '=', 'profiles.musician_id')
         ->leftJoin('musician_details', 'musicians.id', '=', 'musician_details.musician_id')
-        ->join('detail_types', 'musician_details.detail_types_id', '=', 'detail_types.id')
+        ->leftjoin('detail_types', 'musician_details.detail_types_id', '=', 'detail_types.id')
         ->select('musicians.id', 'musicians.first_name', 'musicians.last_name', 'profiles.text as profile_text')
         ->selectRaw('GROUP_CONCAT(`musician_details`.`id` order by `musician_details`.`detail_types_id`) as `musician_details_id`')
         ->selectRaw('GROUP_CONCAT(`musician_details`.`musician_details_text` order by `musician_details`.`detail_types_id`) as `musician_details_text`')
@@ -198,7 +184,6 @@ class MusicianController extends Controller
 
         $page = request('page');
         // need to pass querystring filters here
-
         return view('edit_musician', compact('musician', 'instruments', 'detail_types', 'page'));
 
     }
@@ -209,7 +194,7 @@ class MusicianController extends Controller
         $fields = request()->validate([
             'first_name' => ['required', 'min:2', 'max:32'],
             'last_name' => ['required', 'min:2', 'max:32'],
-            'profile_text' => ['nullable']
+            'profile_text' => ['nullable'],
         ]);
 
         $musician = Musician::find($id);
@@ -227,42 +212,56 @@ class MusicianController extends Controller
         elseif (strlen($fields['profile_text']) > 0)
             $musician->profile()->upsert(['musician_id' => $id, 'text' => $fields['profile_text']], true);
 
-        return redirect('/?page=' . request('page'));
+        $redirect_querystring = request('page') ? '?page=' . request('page') : '';
+        return redirect('/' . $redirect_querystring);
 
     }
 
 
-    public function removeMusicianInstrument() {
-        $musician = Musician::find(request('musician_id'));
-        $musician->instruments()->detach(request('instrument_id'));
-    }
 
     public function addMusicianInstrument() {
         $musician = Musician::find(request('musician_id'));
         $musician->instruments()->attach(request('instrument_id'));
     }
 
+    public function removeMusicianInstrument() {
+        $musician = Musician::find(request('musician_id'));
+        $musician->instruments()->detach(request('instrument_id'));
+    }
 
 
+    public function store_musician_detail($musician_id, $detail_types_id, $musician_details_text): void
+    {
 
-    public function destroy_musician_detail() {
+        for ($i = 0; $i < count($musician_details_text); $i++) {
+            if (strlen($musician_details_text[$i]) > 0 && intval($detail_types_id[$i]) > 0) {
+                MusicianDetail::create([
+                    'musician_id' => $musician_id,
+                    'detail_types_id' => $detail_types_id[$i],
+                    'musician_details_text' => $musician_details_text[$i]
+                ]);
+            }
+        }
+    }
+
+    public function destroy_musician_detail(): void
+    {
         MusicianDetail::destroy(request('musician_detail_id'));
     }
 
 
 
-    public function getProfile($profile_id) {
+    public function getProfile($profile_id): string
+    {
         $profile = Profile::find($profile_id);
+        if (! isset($profile->text)) abort(404);
         return nl2br(htmlentities($profile->text));
     }
 
-
-
-
-
     public function destroy($id) {
         Musician::destroy($id);
-        return redirect('/?page=' . request('page'));
+        $redirect_querystring = request('page') ? '?page=' . request('page') : '';
+        return redirect('/' . $redirect_querystring);
     }
 
 

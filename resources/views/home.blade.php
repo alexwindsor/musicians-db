@@ -52,7 +52,7 @@
 
                 <div class="flex">
                     <button type="submit" class="border-l-4 border-black  bg-zinc-500 grow text-white m-0.5 p-1">SEARCH</button></div>
-                
+
                 <div>
                     <a href="/" class="w-full">
                         <div class="border-l-4 border-black  bg-zinc-500 text-white text-center m-0.5 p-1">
@@ -61,7 +61,7 @@
                     </a>
                 </div>
             </div>
-        </form> 
+        </form>
     </div>
 
 
@@ -98,7 +98,7 @@
 
                 @endfor
             </div>
-            
+
             <div class="text-xs mb-2 w-full text-center sm:w-auto sm:basis-2/6">
                 @foreach ($musician->instruments as $instrument)
                     <a href="/?instruments={{ str_replace(' ', '_', $instrument->name) }}" class="underline">{{ $instrument->name }}</a>@if (! $loop->last),@endif
@@ -107,9 +107,9 @@
 
             <div class="justify-around sm:justify-start w-full sm:w-min mb-2 sm:basis-1/6">
                 <form action="/delete_musician/{{ $musician->id }}?page={{ $musicians->currentPage() }}" method="post" onsubmit="return confirm('are you sure?')">@csrf
-                
+
                 <a href="/edit_musician/{{ $musician->id }}?page={{ $musicians->currentPage() }}" class="border-l-4 border-black  bg-zinc-500 text-white px-1 h-6 mr-3 sm:mb-2">EDIT</a><br>
-                
+
                 <button type="submit" class="border-l-4 border-black  bg-zinc-500 text-white px-1 h-6 sm:mt-2">DELETE</button>
                 </form>
             </div>
@@ -194,7 +194,7 @@
                 instruments_string = instruments_string.replaceAll('_', ' ');
                 if (instruments_string.substring(0,2) === ', ') instruments_string = instruments_string.substring(2);
                 if (instruments_string.substring(0,1) === ' ') instruments_string = instruments_string.substring(1);
-                $('#instruments-box').html(instruments_string);                
+                $('#instruments-box').html(instruments_string);
             }
             // remove an instrument from the hidden form and remove the different background
             else {

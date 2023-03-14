@@ -29,7 +29,7 @@ class Musician extends Model
                 $query->orWhere('musicians.first_name', $names[$i])
                     ->orWhere('musicians.last_name', $names[$i]);
             }
-            
+
         }
     }
 
@@ -49,7 +49,7 @@ class Musician extends Model
     }
 
     public function instruments() {
-        return $this->belongsToMany(Instrument::class)->select(['name'])->orderBy('name');
+        return $this->belongsToMany(Instrument::class)->select(['instrument_musician.instrument_id', 'name'])->orderBy('name');
     }
 
     public function musicianDetails() {

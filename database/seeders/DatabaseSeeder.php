@@ -60,16 +60,13 @@ class DatabaseSeeder extends Seeder
             ['detail_type_text' => 'bank details'],
             ['detail_type_text' => 'address'],
             ['detail_type_text' => 'website'],
-            ['detail_type_text' => 'facebook'], 
-            ['detail_type_text' => 'linkedin'], 
-            ['detail_type_text' => 'myspace'],            
+            ['detail_type_text' => 'facebook'],
+            ['detail_type_text' => 'linkedin'],
+            ['detail_type_text' => 'myspace'],
         ]);
 
-        $musicianCount = 80000;
-
-
+        $musicianCount = 10;
         Musician::factory($musicianCount)->create();
-
 
 
         $rand_num_of_instruments = [1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 4, 5, 6]; // 15 numbers in array
@@ -123,22 +120,22 @@ class DatabaseSeeder extends Seeder
 
                 $random_detail = rand(1, 8);
 
-                if ($random_detail === 1) 
+                if ($random_detail === 1)
                     $musician_details_text = $faker->phoneNumber;
 
                 elseif ($random_detail === 2) $musician_details_text = $faker->email;
-                elseif ($random_detail === 3) 
+                elseif ($random_detail === 3)
                     $musician_details_text = $faker->randomNumber(8) . ' / ' . $faker->randomNumber(2) . '-' . $faker->randomNumber(2) . '-' . $faker->randomNumber(2); // bank account / sort no.
                 elseif ($random_detail === 4) $musician_details_text = $faker->address;
                 elseif ($random_detail >= 5 && $random_detail <=8) $musician_details_text = $faker->url;
-                
+
                 MusicianDetail::create([
                     'musician_id' => $musician_id,
                     'detail_types_id' => $random_detail,
                     'musician_details_text' => $musician_details_text
                 ]);
 
-            } 
+            }
 
         }
 

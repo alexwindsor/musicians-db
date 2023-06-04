@@ -58,7 +58,6 @@ class MusicianController extends Controller
             $dompdf->render();
             $dompdf->stream();
         }
-        // else return view('home', compact('musicians', 'instruments', 'instruments_filter'));
 
         else return Inertia::render('Index', compact('musicians', 'instruments', 'instruments_filter', 'page', 'profile_only', 'name_search'));
 

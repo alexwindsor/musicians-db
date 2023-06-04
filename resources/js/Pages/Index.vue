@@ -61,6 +61,10 @@ const querystring = window.location.search
 </div>
 </form>
 
+<div>
+<a :href="musoDb.base_url + 'pdf' + querystring" class="m-8 border border-black rounded p-1 bg-gray-200" target="_blank">Download results as a .pdf</a>
+</div>
+
 <div class="sm:grid sm:grid-cols-3">
     <div class="p-5">
     <b>{{ musicians.total }}</b> musician(s) found.

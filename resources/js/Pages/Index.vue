@@ -37,12 +37,12 @@ const querystring = window.location.search
 
     <div class="sm:row-span-2">
         Filter by musical instrument:
-        <div class="border border-black bg-white p-1 rounded h-48 overflow-y-scroll">
-            <input type="hidden" id="instruments" name="instruments" :value="instruments_filter.join('*').replace(' ', '_')">
+        <div class="border border-black bg-white p-1 mb-3 rounded h-48 overflow-y-scroll">
+            <input type="hidden" id="instruments" name="instruments" :value="instruments_filter.join(' ')">
             <div 
                 v-for="instrument in instruments" 
                 :class="{
-                    'bg-zinc-500 text-white': instruments_filter.includes(instrument.name)
+                    'bg-zinc-500 text-white': instruments_filter.includes(instrument.name.replace(' ', '_'))
                 }"
                 @click="musoDb.addRemoveInstrumentFilter(instruments_filter, instrument.name)"
                 >
@@ -50,6 +50,7 @@ const querystring = window.location.search
             </div>
         </div>
 
+        <span v-for="instrument in instruments_filter" class="my-2 text-xs border border-black rounded-xl p-1 m-1 inline-block">{{ instrument.replace('_', ' ') }}</span>
     </div>
 
     <div class="text-center">

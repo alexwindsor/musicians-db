@@ -37,6 +37,9 @@ class Musician extends Model
     public function scopeInstrumentsFilter($query, $instruments) {
 
         if (count($instruments)) {
+
+            $instruments = array_map(fn($instrument) => str_replace('_', ' ', $instrument), $instruments);
+
             $query->whereHas('instruments', function ($query) use ($instruments) {
                 $query->whereIn('name', $instruments);
               });

@@ -17,7 +17,9 @@ class MusicianController extends Controller
     public function index($pdf = false) {
 
         $instruments_filter = [];
-        if (request('instruments')) $instruments_filter = explode('*', str_replace('_', ' ', request('instruments')));
+        if (request('instruments')) {
+            $instruments_filter = explode(' ', request('instruments'));
+        } 
 
         $page = intval(request('page'));
         $profile_only = request('profile_only') === 'on' ? true : false;

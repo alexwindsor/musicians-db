@@ -14,11 +14,14 @@ export let musoDb = reactive({
     },
 
     addRemoveInstrumentFilter(instruments_filter, instrument_name) {
-        if (instruments_filter.includes(instrument_name)) {
-            var index = instruments_filter.indexOf(instrument_name);
+        console.log(instruments_filter + ' / ' + instrument_name)
+        if (instruments_filter.includes(instrument_name.replace(' ', '_'))) {
+            var index = instruments_filter.indexOf(instrument_name.replace(' ', '_'))
             if (index !== -1) instruments_filter.splice(index, 1);
         }
-        else instruments_filter.push(instrument_name)
+        else {
+            instruments_filter.push(instrument_name.replace(' ', '_'))
+        } 
     },
 
     async showProfile(profile_id) {

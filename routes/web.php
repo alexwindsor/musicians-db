@@ -4,7 +4,7 @@ use App\Http\Controllers\MusicianController;
 
 Route::get('/', [MusicianController::class, 'index']);
 Route::get('add_musician', [MusicianController::class, 'add']);
-Route::post('/add_musician', [MusicianController::class, 'store']);
+Route::post('add_musician', [MusicianController::class, 'store']);
 Route::get('edit_musician/{musician:id}', [MusicianController::class, 'edit']);
 Route::put('update_musician/{musician:id}', [MusicianController::class, 'update']);
 Route::delete('/delete_musician/{musician:id}', [MusicianController::class, 'destroy']);

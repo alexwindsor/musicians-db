@@ -116,7 +116,7 @@ class DatabaseSeeder extends Seeder
             // as well as the above, each musician also has between 0 and 3 further random details
             for ($i = 0; $i < rand(0, 4); $i++) {
 
-                $random_detail = rand(1, 8);
+                $random_detail = rand(1, 7);
 
                 if ($random_detail === 1)
                     $musician_details_text = $faker->phoneNumber;

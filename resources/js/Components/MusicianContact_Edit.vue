@@ -42,7 +42,10 @@ function deleteContact() {
 
 
     <div class="col-span-4 sm:col-span-3">
-        <input type="text" v-model="form.musician_details_text[count]" class="border border-black rounded p-2 sm:m-2 w-full sm:w-11/12">
+        <!-- show input text if not an address -->
+        <input type="text" v-if="form.musician_detail_types_ids[count] !== '4'" v-model="form.musician_details_text[count]" class="border border-black rounded p-2 sm:m-2 w-full sm:w-11/12">
+        <!-- show textarea if it is an address -->
+        <textarea v-if="form.musician_detail_types_ids[count] == '4'" cols="2" v-model="form.musician_details_text[count]" class="border border-black rounded p-2 sm:m-2 w-full sm:w-11/12"></textarea>
         <div v-if="errors['musician_details_text.' + count]" class="text-red-500 text-xs">Please fill this in</div>
     </div>
 
@@ -55,5 +58,6 @@ function deleteContact() {
         >DELETE</button>
     </div>
 </div>
+
 
 </template>

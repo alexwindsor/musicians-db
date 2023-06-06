@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use \Illuminate\Http\Request;
+use \Illuminate\Support\Facades\DB;
 use \App\Models\Musician;
 use \App\Models\Instrument;
 use \App\Models\Profile;
 use \App\Models\MusicianDetail;
 use \App\Models\DetailType;
 use \Dompdf\Dompdf;
-use Inertia\Inertia;
+use \Inertia\Inertia;
 
 class MusicianController extends Controller
 {
@@ -209,7 +209,7 @@ class MusicianController extends Controller
 
     public function update($id) {
 
-        // die($_SERVER['QUERY_STRING'] ?? 'non');
+        // dd(request());
 
         $fields = request()->validate([
             'first_name' => ['required', 'min:2', 'max:32'],
@@ -309,7 +309,7 @@ class MusicianController extends Controller
     public function getProfile($profile_id): string
     {
         $profile = Profile::find($profile_id);
-        if (! isset($profile->text)) abort(404);
+        
         return htmlentities($profile->text);
     }
 

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use \App\Models\User;
 use \App\Models\Musician;
 use \App\Models\Instrument;
 use \App\Models\Profile;
@@ -60,9 +59,8 @@ class DatabaseSeeder extends Seeder
             ['detail_type_text' => 'bank details'],
             ['detail_type_text' => 'address'],
             ['detail_type_text' => 'website'],
-            ['detail_type_text' => 'facebook'],
-            ['detail_type_text' => 'linkedin'],
-            ['detail_type_text' => 'myspace'],
+            ['detail_type_text' => 'instagram'],
+            ['detail_type_text' => 'facebook']
         ]);
 
         $musicianCount = 1200;
@@ -127,7 +125,10 @@ class DatabaseSeeder extends Seeder
                 elseif ($random_detail === 3)
                     $musician_details_text = $faker->randomNumber(8) . ' / ' . $faker->randomNumber(2) . '-' . $faker->randomNumber(2) . '-' . $faker->randomNumber(2); // bank account / sort no.
                 elseif ($random_detail === 4) $musician_details_text = $faker->address;
-                elseif ($random_detail >= 5 && $random_detail <=8) $musician_details_text = $faker->url;
+                elseif ($random_detail === 5) $musician_details_text = $faker->url;
+                elseif ($random_detail === 6 || $random_detail === 7) $musician_details_text = '@' . $faker->word . '_' . $faker->word;
+                
+                // && $random_detail <=8) $musician_details_text = $faker->url;
 
                 MusicianDetail::create([
                     'musician_id' => $musician_id,

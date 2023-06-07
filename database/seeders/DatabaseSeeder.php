@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             ['detail_type_text' => 'facebook']
         ]);
 
-        $musicianCount = 1200;
+        $musicianCount = 18000;
         Musician::factory($musicianCount)->create();
 
 

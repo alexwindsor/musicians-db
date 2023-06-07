@@ -56,6 +56,7 @@ function submit() {
 <template>
 <Head title="EDIT / Musicians Database" />
 <Layout>
+
 <form @submit.prevent="submit">
 <input type="hidden" name="_token" :value="auth.csrf">
 

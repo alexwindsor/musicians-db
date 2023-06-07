@@ -60,6 +60,10 @@ class CreateEditDeleteMusicianTest extends TestCase
         ]);
 
         $response->assertValid(['first_name', 'last_name', 'instrument', 'profile', 'new_musician_detail', 'new_detail_types']);
+
+        $musician_id = Musician::select('id')->max('id');
+        Musician::destroy($musician_id);
+        
     }
 
 

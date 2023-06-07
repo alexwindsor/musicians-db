@@ -179,6 +179,8 @@ class MusicianController extends Controller
         ->groupBy('musicians.id', 'musicians.first_name', 'musicians.last_name', 'profiles.text')
         ->find($id);
 
+        if (!$musician) abort(404);
+
         // explode the comma separated musician_details values into arrays
         $musician->musician_details_id = explode(',', $musician->musician_details_id);
         $musician->musician_detail_types_ids = explode(',', $musician->musician_detail_types_ids);
@@ -314,7 +316,7 @@ class MusicianController extends Controller
     }
 
     public function destroy($id) {
-        Musician::destroy($id);
+        if (! Musician::destroy($id)) abort(404);
         $redirect_querystring = intval(request('page')) > 1 ? '?page=' . request('page') : '';
         return redirect('/' . $redirect_querystring);
     }
